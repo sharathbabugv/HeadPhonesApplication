@@ -13,6 +13,15 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
 
     private List<MainModel> mainModelList;
+    private OnRecyclerItemClickListener onRecyclerItemClickListener;
+
+    interface OnRecyclerItemClickListener{
+        void onClick(int pos);
+    }
+
+    void setOnRecyclerItemClickListener(OnRecyclerItemClickListener onRecyclerItemClickListener){
+        this.onRecyclerItemClickListener = onRecyclerItemClickListener;
+    }
 
     MainAdapter(List<MainModel> mainModelList) {
         this.mainModelList = mainModelList;
@@ -41,6 +50,18 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         MainViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageItem);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onRecyclerItemClickListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            onRecyclerItemClickListener.onClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
